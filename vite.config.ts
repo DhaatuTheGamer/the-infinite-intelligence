@@ -20,7 +20,21 @@ export default defineConfig(({ mode }) => {
           '@': path.resolve(__dirname, '.'),
         }
       },
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'vendor-react': ['react', 'react-dom'],
+              'vendor-utils': ['jspdf', 'html2canvas'],
+              'vendor-ai': ['@google/genai'],
+              'vendor-motion': ['motion', 'motion/react'],
+            }
+          }
+        },
+        chunkSizeWarningLimit: 1000,
+      },
       test: {
+
         globals: true,
         environment: 'jsdom',
         setupFiles: ['./vitest.setup.ts'],
