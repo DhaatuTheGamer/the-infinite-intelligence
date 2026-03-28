@@ -1,117 +1,132 @@
-# AI Agent Orchestrator
+# The Infinite Intelligence
 
-## Overview
-AI Agent Orchestrator is a powerful, interactive web application that leverages the Google Gemini API to orchestrate a panel of specialized AI agents. By breaking down prompts using First Principles thinking and distributing the analysis across distinct personas, the application synthesizes highly comprehensive, multi-faceted responses.
+**AI Agent Orchestrator** — A powerful, interactive web application that harnesses the Google Gemini API to orchestrate a panel of specialized AI agents. By decomposing prompts through **First Principles** thinking and distributing analysis across distinct cognitive personas, it synthesizes comprehensive, multi-faceted responses that surpass single-model outputs.
 
-This project serves as a demonstration of collective AI intelligence, where different cognitive approaches (Logic, Emotion, Ethics, and Action) collaborate to provide superior insights.
+### What
+It turns a single user prompt into a collaborative symphony of AI agents (Logic, Emotion, Ethics, Action + dynamically assembled domain experts) that debate, critique, and refine their outputs before delivering a unified, high-quality final synthesis.
+
+### Why
+Traditional AI responses often lack depth, nuance, or balanced perspectives. This project solves that by simulating collective intelligence — delivering richer insights, better reasoning, and actionable results for complex questions in strategy, ethics, creativity, technical problems, and more.
+
+### How
+Built as a modern, client-side React SPA with real-time streaming, visual orchestration graphs, artifact extraction, conversation branching, and human-in-the-loop controls — all powered directly by Gemini 3.1 Pro and Flash models.
+
+
+---
 
 ## Table of Contents
 - [Features](#features)
 - [Architecture](#architecture)
-- [Technologies Used](#technologies-used)
+- [Tech Stack](#tech-stack)
 - [Installation & Requirements](#installation--requirements)
-- [Usage Instructions](#usage-instructions)
+- [Usage Instructions & Examples](#usage-instructions--examples)
 - [Contribution Guidelines](#contribution-guidelines)
+- [Testing](#testing)
 - [License](#license)
 
 ## Features
-- **Collaboration Modes**: Choose how agents interact: 'Parallel' (simultaneous), 'Sequential' (building on each other), or 'Round-Robin' (taking turns in a shared workspace).
-- **Agent Customization**: Personalize agent personas with custom icons and adjustable parameters (Creativity, Logic, Formality) via sliders.
-- **Short-Term Memory**: Agents recall their previous interactions within the current conversation turn, improving context awareness and continuity.
-- **Enhanced Error Handling**: User-friendly error messages with troubleshooting suggestions and expandable details for debugging.
-- **Dynamic Expert Assembly**: Automatically selects and configures the optimal AI personas (e.g., Security Auditor, UX Designer) based on the specific needs of your prompt.
-- **First Principles Analysis**: Automatically breaks down complex user prompts into fundamental truths before processing.
-- **Inter-Agent Debate & Critique**: Agents review and critique each other's initial responses across multiple configurable rounds, refining their outputs before final synthesis.
-- **Human-in-the-Loop (HITL)**: Optional pause before final synthesis, allowing users to review agent outputs, provide feedback, and steer the final result.
-- **Configurable Topologies**: Choose between 'QUICK' (fast, 2 agents), 'STANDARD' (balanced, 4 agents), or 'DEEP' (thorough, 4 agents with custom debate rounds) workflows.
-- **Artifact Extraction**: Automatically identifies and extracts structured deliverables (code, JSON, markdown, HTML, SVG) into a dedicated, interactive panel.
-- **Token Usage Tracking**: Real-time monitoring of token consumption across all API calls for cost and performance visibility.
-- **Conversation Branching**: Fork the conversation at any past turn to explore alternative paths without losing your original context.
-- **Executive Report Export**: Generate and download beautifully formatted PDF reports of the entire orchestration process (analysis, agent thoughts, synthesis).
-- **Visual Orchestration Graph**: Real-time animated node graph showing the flow of data through the Analysis, Assembly, Execution, Critique, Review (HITL), and Synthesis stages.
-- **Progressive Disclosure UI**: Agent cards automatically collapse during the synthesis phase to focus attention on the final output.
-- **Web Grounding**: Agents have access to Google Search to ground their responses in current information.
-- **Feedback Loop**: Thumbs up/down feedback on individual agent outputs influences their behavior in subsequent turns.
-- **Markdown Rendering**: Full support for rich text, code blocks, and tables in agent outputs and final synthesis.
+- **Collaboration Modes**: Parallel, Sequential, or Round-Robin agent interaction
+- **Dynamic Expert Assembly**: Automatically recruits specialized agents (e.g., Security Auditor, UX Designer) based on prompt analysis
+- **First Principles Breakdown**: Automatically decomposes any prompt into fundamental truths
+- **Inter-Agent Debate & Critique**: Multiple rounds of peer review and refinement
+- **Human-in-the-Loop (HITL)**: Pause for user feedback before final synthesis
+- **Configurable Topologies**: QUICK (2 agents), STANDARD (4 agents), DEEP (4+ agents with extended debate)
+- **Artifact Extraction**: Auto-detects and renders code, JSON, Markdown, HTML, SVG in a dedicated panel
+- **Visual Orchestration Graph**: Real-time animated flowchart of the entire pipeline
+- **Token Usage Tracking**, **Conversation Branching**, **PDF Executive Reports**, **Web Grounding**, and **Feedback Loops**
+- Beautiful, responsive UI with progressive disclosure, Lucide icons, and smooth Framer Motion animations
 
 ## Architecture
-The application follows a client-side React architecture (Single Page Application) built with Vite. It communicates directly with the Google Gemini API (`@google/genai`) from the browser. 
+Client-side React (Vite) SPA that talks directly to the Gemini API in the browser.
 
-1. **Input Stage**: User submits a prompt.
-2. **Analysis Stage**: The prompt is sent to Gemini 3.1 Pro to be broken down via First Principles.
-3. **Parallel Execution**: The analyzed prompt is sent simultaneously to up to eight Gemini instances (4 fixed personas: Logos, Pathos, Ethos, Praxis, and up to 4 dynamically assembled experts), each configured with a specific system instruction.
-4. **Critique Stage**: The agents review and critique each other's initial responses over multiple rounds, refining their outputs.
-5. **Review Stage (Optional)**: If HITL is enabled, the process pauses for human review and feedback.
-6. **Synthesis Stage**: The refined responses are fed back into Gemini 3.1 Pro to generate a final, unified output.
+1. **Input** → Prompt submitted
+2. **Analysis** → Gemini 3.1 Pro performs First Principles decomposition
+3. **Assembly & Execution** → Multiple parallel Gemini instances (fixed + dynamic personas)
+4. **Critique** → Agents review and improve each other’s outputs
+5. **Review (optional HITL)** → User can steer the process
+6. **Synthesis** → Final unified response with artifact extraction
 
-## Technologies Used
-- **Frontend Framework**: React 18
+## Tech Stack
+- **Frontend**: React 18 + TypeScript
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Animations**: Motion (Framer Motion)
-- **AI Integration**: `@google/genai` (Gemini 3.1 Pro & Gemini 3 Flash)
+- **UI Components & Icons**: Lucide React
+- **Animations**: Framer Motion
+- **AI SDK**: `@google/generative-ai` (Gemini 3.1 Pro & Flash)
 - **Markdown Rendering**: `react-markdown`
+- **Testing**: Vitest
 
 ## Installation & Requirements
-
 ### Prerequisites
-- Node.js (v18 or higher recommended)
+- Node.js (v18 or higher)
 - npm or yarn
-- A Google Gemini API Key
+- Google Gemini API key (get one free at [Google AI Studio](https://aistudio.google.com))
 
-### Setup Steps
-1. **Clone the repository** (or download the source code).
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-3. **Configure Environment Variables**:
-   Create a `.env` file in the root directory and add your Gemini API key:
-   ```env
-   GEMINI_API_KEY=your_api_key_here
-   ```
-   *(Note: In the AI Studio environment, this is injected automatically).*
-4. **Start the Development Server**:
-   ```bash
-   npm run dev
-   ```
-5. Open your browser and navigate to `http://localhost:3000`.
+### Setup
 
-## Usage Instructions
-1. **Enter a Prompt**: Type a complex question, scenario, or problem into the main input area.
-2. **Observe the Process**: 
-   - Watch as the prompt is first analyzed and broken down.
-   - See the four agents (Logos, Pathos, Ethos, Praxis) generate their unique perspectives in real-time.
-3. **Review Synthesis**: Read the final synthesized output that combines all perspectives.
-4. **Provide Feedback**: Use the thumbs up/down icons on individual agent cards to guide their future responses in the conversation.
-5. **Manage History**: Access past turns, edit titles, or archive conversations using the History panel.
+# 1. Clone the repository
+```bash
+git clone https://github.com/DhaatuTheGamer/the-infinite-intelligence.git
+cd the-infinite-intelligence
+```
+
+# 2. Install dependencies
+```bash
+npm install
+```
+
+# 3. Create .env file in the root
+```bash
+echo "VITE_GEMINI_API_KEY=your_api_key_here" > .env
+# (Note: Prefix with VITE_ for Vite environment variables)
+```
+
+# 4. Start development server
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) and start orchestrating intelligence!
+
+## Usage Instructions & Examples
+1. Enter any complex prompt in the main input box.
+2. (Optional) Open Settings to choose topology, collaboration mode, or enable HITL.
+3. Click **Orchestrate** and watch the live process unfold.
+4. Review individual agent thoughts, critique rounds, and the final synthesis.
+5. Download PDF report or extract artifacts.
+
+### Example Prompts
+```text
+"How should humanity prepare for AGI by 2030?"
+"Design a secure, scalable microservices architecture for a fintech startup."
+"Analyze the ethical implications of gene editing in humans."
+```
+
+The app will automatically break each prompt into First Principles, assemble the right agents, run critique cycles, and deliver a polished, multi-perspective answer.
 
 ## Contribution Guidelines
-We welcome contributions to the AI Agent Orchestrator! 
+Contributions are welcome and encouraged!
 
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix (`git checkout -b feature/amazing-feature`).
-3. Commit your changes (`git commit -m 'Add some amazing feature'`).
-4. Push to the branch (`git push origin feature/amazing-feature`).
-5. Open a Pull Request.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-idea`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-idea`)
+5. Open a Pull Request
 
-Please ensure your code adheres to the existing style and that all new features are properly documented. We follow the [Contributor Covenant](https://www.contributor-covenant.org/) code of conduct.
+Please follow the existing code style and [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/).
 
-## Testing Instructions
-*(Currently, manual testing is required as automated test suites are being developed.)*
-To verify changes:
-1. Run the development server (`npm run dev`).
-2. Open the Settings modal and configure your preferred **Workflow Topology** and enable **Human-in-the-Loop (HITL)** if desired.
-3. Submit a test prompt (e.g., "How should humanity address climate change?").
-4. Verify that the First Principles Analysis appears.
-5. Verify that the dynamic agents are correctly assembled based on the prompt.
-6. Verify that all active agents return responses and critique each other without errors.
-7. If HITL is enabled, verify that the workflow pauses and allows you to "Approve & Synthesize".
-8. Verify that the final synthesis streams correctly and incorporates the agents' viewpoints.
-9. Verify that artifacts (code, JSON, HTML, SVG) are correctly extracted into the Artifacts panel and render correctly.
-10. Check the History sidebar to view past turns, including their topology and **Token Usage**.
-11. Test the branching and PDF export functionalities.
+## Testing
+- **Automated tests**: Run with `npm run test` (Vitest setup is included)
+- **Manual verification** (recommended for UI flows):
+  - Test all three topologies
+  - Enable/disable HITL
+  - Submit sample prompts and verify artifact extraction + PDF export
+  - Check token usage tracking and conversation branching
 
 ## License
-This project is licensed under the MIT License. You are free to use, modify, and distribute this software as per the terms of the license.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+**Made with ❤️ by Dhaatrik Chowdhury**  
+Ready to explore infinite intelligence? Start orchestrating today!
