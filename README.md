@@ -1,132 +1,130 @@
 # The Infinite Intelligence
 
-**AI Agent Orchestrator** — A powerful, interactive web application that harnesses the Google Gemini API to orchestrate a panel of specialized AI agents. By decomposing prompts through **First Principles** thinking and distributing analysis across distinct cognitive personas, it synthesizes comprehensive, multi-faceted responses that surpass single-model outputs.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-6-purple.svg)](https://vitejs.dev/)
+[![Gemini](https://img.shields.io/badge/AI-Gemini%203.1-orange.svg)](https://deepmind.google/technologies/gemini/)
 
-### What
-It turns a single user prompt into a collaborative symphony of AI agents (Logic, Emotion, Ethics, Action + dynamically assembled domain experts) that debate, critique, and refine their outputs before delivering a unified, high-quality final synthesis.
-
-### Why
-Traditional AI responses often lack depth, nuance, or balanced perspectives. This project solves that by simulating collective intelligence — delivering richer insights, better reasoning, and actionable results for complex questions in strategy, ethics, creativity, technical problems, and more.
-
-### How
-Built as a modern, client-side React SPA with real-time streaming, visual orchestration graphs, artifact extraction, conversation branching, and human-in-the-loop controls — all powered directly by Gemini 3.1 Pro and Flash models.
-
+**The Infinite Intelligence** is a sophisticated AI agent orchestrator that simulates collective reasoning. While single-model AI often suffers from "tunnel vision" or binary logic, this platform employs a multi-agent "council" to debate, critique, and synthesize complex problems. By decomposing prompts into **First Principles**, the system delivers nuanced, multi-perspective, and highly actionable insights.
 
 ---
 
-## Table of Contents
-- [Features](#features)
-- [Architecture](#architecture)
-- [Tech Stack](#tech-stack)
-- [Installation & Requirements](#installation--requirements)
-- [Usage Instructions & Examples](#usage-instructions--examples)
-- [Contribution Guidelines](#contribution-guidelines)
-- [Testing](#testing)
-- [License](#license)
+## 📖 Table of Contents
+- [Features](#-key-features)
+- [Architecture](#-architecture)
+- [Technologies Used](#-technologies-used)
+- [Installation & Requirements](#-installation--requirements)
+- [Usage Instructions & Examples](#-usage-instructions--examples)
+- [Testing](#-testing)
+- [Contribution Guidelines](#-contribution-guidelines)
+- [License](#-license)
 
-## Features
-- **Collaboration Modes**: Parallel, Sequential, or Round-Robin agent interaction
-- **Dynamic Expert Assembly**: Automatically recruits specialized agents (e.g., Security Auditor, UX Designer) based on prompt analysis
-- **First Principles Breakdown**: Automatically decomposes any prompt into fundamental truths
-- **Inter-Agent Debate & Critique**: Multiple rounds of peer review and refinement
-- **Human-in-the-Loop (HITL)**: Pause for user feedback before final synthesis
-- **Configurable Topologies**: QUICK (2 agents), STANDARD (4 agents), DEEP (4+ agents with extended debate)
-- **Artifact Extraction**: Auto-detects and renders code, JSON, Markdown, HTML, SVG in a dedicated panel
-- **Visual Orchestration Graph**: Real-time animated flowchart of the entire pipeline
-- **Token Usage Tracking**, **Conversation Branching**, **PDF Executive Reports**, **Web Grounding**, and **Feedback Loops**
-- Beautiful, responsive UI with progressive disclosure, Lucide icons, and smooth Framer Motion animations
+---
 
-## Architecture
-Client-side React (Vite) SPA that talks directly to the Gemini API in the browser.
+## 🚀 Key Features
 
-1. **Input** → Prompt submitted
-2. **Analysis** → Gemini 3.1 Pro performs First Principles decomposition
-3. **Assembly & Execution** → Multiple parallel Gemini instances (fixed + dynamic personas)
-4. **Critique** → Agents review and improve each other’s outputs
-5. **Review (optional HITL)** → User can steer the process
-6. **Synthesis** → Final unified response with artifact extraction
+- **Dynamic Expert Assembly**: Automatically recruits specialized domain experts (e.g., Security Auditor, UX Designer) based on the prompt's context.
+- **Collaborative Topologies**: Choose between Parallel (speed), Sequential (depth), or Round-Robin (consensus) agent interaction modes.
+- **Iterative Peer Critique**: Agents engage in multi-round "boardroom" debates to eliminate hallucinations and refine logic.
+- **Artifact Extraction**: Intelligent detection and rendering of code, JSON, and technical diagrams in an interactive side-panel.
+- **Executive Reports**: Generate comprehensive PDF summaries of the entire orchestration process for stakeholders.
 
-## Tech Stack
-- **Frontend**: React 18 + TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS
-- **UI Components & Icons**: Lucide React
+---
+
+## 🏗️ Architecture
+
+The system operates on a 5-stage orchestration pipeline:
+1.  **Analysis**: Decomposes the prompt into its fundamental truths using First Principles logic.
+2.  **Assembly**: Recruits a custom panel of 4 expert agents with unique system instructions.
+3.  **Execution**: Agents process the prompt using behavioral sliders (Creativity vs. Logic).
+4.  **Critique**: Peer-to-peer review cycles where agents identify flaws in each other's reasoning.
+5.  **Synthesis**: A master model merges all perspectives into a unified, authoritative response.
+
+---
+
+## 🛠️ Technologies Used
+
+- **Frontend**: React 18 (SPA), TypeScript, Tailwind CSS
 - **Animations**: Framer Motion
-- **AI SDK**: `@google/generative-ai` (Gemini 3.1 Pro & Flash)
-- **Markdown Rendering**: `react-markdown`
-- **Testing**: Vitest
+- **AI Engine**: Google Generative AI SDK (Gemini 3.1 Pro & 3 Flash)
+- **Utilities**: Lucide React (Icons), React Markdown (Rendering)
+- **Exporting**: jsPDF, html2canvas
 
-## Installation & Requirements
+---
+
+## 📥 Installation & Requirements
+
 ### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-- Google Gemini API key (get one free at [Google AI Studio](https://aistudio.google.com))
+- **Node.js**: v18.0.0 or higher
+- **API Key**: A Google Gemini API Key from [Google AI Studio](https://aistudio.google.com/)
 
-### Setup
+### Setup Instructions
+1.  **Clone the Repository**:
+    ```bash
+    git clone https://github.com/your-username/the-infinite-intelligence.git
+    cd the-infinite-intelligence
+    ```
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Environment Configuration**:
+    Create a `.env` file in the root directory and add your API key:
+    ```env
+    VITE_GEMINI_API_KEY=your_key_here
+    ```
+4.  **Start Development Server**:
+    ```bash
+    npm run dev
+    ```
 
-# 1. Clone the repository
-```bash
-git clone https://github.com/DhaatuTheGamer/the-infinite-intelligence.git
-cd the-infinite-intelligence
-```
+---
 
-# 2. Install dependencies
-```bash
-npm install
-```
+## 💡 Usage Instructions & Examples
 
-# 3. Create .env file in the root
-```bash
-echo "VITE_GEMINI_API_KEY=your_api_key_here" > .env
-# (Note: Prefix with VITE_ for Vite environment variables)
-```
-
-# 4. Start development server
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) and start orchestrating intelligence!
-
-## Usage Instructions & Examples
-1. Enter any complex prompt in the main input box.
-2. (Optional) Open Settings to choose topology, collaboration mode, or enable HITL.
-3. Click **Orchestrate** and watch the live process unfold.
-4. Review individual agent thoughts, critique rounds, and the final synthesis.
-5. Download PDF report or extract artifacts.
+1.  **Input a Complex Prompt**: Enter a strategic or creative question (e.g., *"Design a sustainable lunar colony architecture"*).
+2.  **Select Topology**: Use the settings to choose between **Standard** (4 agents) or **Deep** (4+ agents with extended debate).
+3.  **Monitor the Process**: Watch the "Orchestration Graph" as agents analyze, critique, and synthesize.
+4.  **Extract Artifacts**: Click the Artifacts icon to view extracted code or data structures.
 
 ### Example Prompts
-```text
-"How should humanity prepare for AGI by 2030?"
-"Design a secure, scalable microservices architecture for a fintech startup."
-"Analyze the ethical implications of gene editing in humans."
-```
-
-The app will automatically break each prompt into First Principles, assemble the right agents, run critique cycles, and deliver a polished, multi-perspective answer.
-
-## Contribution Guidelines
-Contributions are welcome and encouraged!
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-idea`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-idea`)
-5. Open a Pull Request
-
-Please follow the existing code style and [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/).
-
-## Testing
-- **Automated tests**: Run with `npm run test` (Vitest setup is included)
-- **Manual verification** (recommended for UI flows):
-  - Test all three topologies
-  - Enable/disable HITL
-  - Submit sample prompts and verify artifact extraction + PDF export
-  - Check token usage tracking and conversation branching
-
-## License
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+- *"Analyze the ethical implications of autonomous vehicles in urban environments."*
+- *"Create a microservices architecture for a high-frequency trading platform."*
+- *"Draft a marketing strategy for a startup focused on carbon capture technology."*
 
 ---
 
-**Made with ❤️ by Dhaatrik Chowdhury**  
-Ready to explore infinite intelligence? Start orchestrating today!
+## 🧪 Testing
+
+We use **Vitest** for unit and integration testing of the orchestration logic. To verify the project's integrity, run:
+
+```bash
+# Run all tests
+npm run test
+
+# Run tests in UI mode
+npx vitest --ui
+```
+
+---
+
+## 🤝 Contribution Guidelines
+
+We welcome contributions from the community! To maintain high code quality:
+- Follow the [Architectural Guidelines](./conductor/product-guidelines.md).
+- Ensure all new features include corresponding tests.
+- We adhere to the [Contributor Covenant](https://www.contributor-covenant.org/) code of conduct.
+
+1.  Fork the repo and create your branch (`feature/AmazingFeature`).
+2.  Commit your changes (`git commit -m 'feat: add amazing feature'`).
+3.  Open a Pull Request for review.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+
+---
+
+**Empowering human decisions with the precision of collective intelligence.**
