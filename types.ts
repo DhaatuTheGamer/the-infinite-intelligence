@@ -26,11 +26,6 @@ export interface AgentPersona {
   bgGradient: string;
   icon: string;
   systemInstruction: string;
-  sliders?: {
-    creativity: number;
-    logic: number;
-    formality: number;
-  };
 }
 
 export interface ChatMessage {
@@ -47,6 +42,7 @@ export interface TokenUsage {
 export interface AgentResult {
   content: string;
   critique?: string;
+  summary?: string;
   status: AgentStatus;
   feedback?: 'up' | 'down';
   error?: string;
@@ -60,14 +56,24 @@ export interface Artifact {
   content: string;
 }
 
+export interface AgentPreset {
+  id?: string;
+  name?: string;
+  description?: string;
+  instructions: Partial<Record<AgentId, string>>;
+  agents?: Partial<Record<AgentId, string>>;
+}
+
 export interface ConversationTurn {
   id: string;
+  sessionId?: string;
   title?: string;
   prompt: string;
   analyzedPrompt?: string;
   dynamicAgents?: AgentPersona[];
   agentOutputs: Record<AgentId, AgentResult>;
   finalOutput: string;
+  finalFeedback?: 'up' | 'down';
   artifacts?: Artifact[];
   timestamp: number;
   archived?: boolean;
@@ -75,6 +81,9 @@ export interface ConversationTurn {
   collaborationMode?: 'parallel' | 'sequential' | 'round-robin';
   totalTokens?: number;
 }
+
+export type OrchestrationTurn = ConversationTurn;
+export type Agent = AgentPersona;
 
 export interface ProcessingState {
   isProcessing: boolean;

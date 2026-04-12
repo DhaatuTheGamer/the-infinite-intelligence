@@ -61,7 +61,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, com
         h1: ({node, ...props}) => <h1 className={`font-bold text-white mb-2 ${compact ? 'text-base mt-2' : 'text-2xl mt-6'}`} {...props} />,
         h2: ({node, ...props}) => <h2 className={`font-bold text-white mb-2 ${compact ? 'text-sm mt-2' : 'text-xl mt-5'}`} {...props} />,
         h3: ({node, ...props}) => <h3 className={`font-bold text-white mb-1 ${compact ? 'text-xs mt-1' : 'text-lg mt-4'}`} {...props} />,
-        p: ({node, ...props}) => <p className={`text-gray-300 leading-relaxed ${compact ? 'mb-2 text-xs' : 'mb-4 text-base'}`} {...props} />,
+        p: ({node, ...props}) => <p className={`text-gray-300 leading-relaxed whitespace-pre-wrap ${compact ? 'mb-2 text-xs' : 'mb-4 text-base'}`} {...props} />,
         ul: ({node, ...props}) => <ul className={`list-disc list-outside ml-4 text-gray-300 ${compact ? 'mb-2 text-xs' : 'mb-4 text-base'}`} {...props} />,
         ol: ({node, ...props}) => <ol className={`list-decimal list-outside ml-4 text-gray-300 ${compact ? 'mb-2 text-xs' : 'mb-4 text-base'}`} {...props} />,
         li: ({node, ...props}) => <li className="mb-1 pl-1" {...props} />,
@@ -72,6 +72,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, com
         th: ({node, ...props}) => <th className={`bg-white/5 font-semibold text-gray-200 border-b border-white/10 ${compact ? 'p-2 text-xs' : 'p-3 text-sm'}`} {...props} />,
         td: ({node, ...props}) => <td className={`border-b border-white/5 text-gray-400 ${compact ? 'p-2 text-xs' : 'p-3 text-sm'}`} {...props} />,
         hr: ({node, ...props}) => <hr className="border-white/10 my-6" {...props} />,
+        strong: ({node, ...props}) => <strong className="font-bold text-white" {...props} />,
+        em: ({node, ...props}) => <em className="italic" {...props} />,
       }}
     >
       {content}
