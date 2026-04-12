@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { AgentPersona, AgentStatus } from '../types';
-import { BrainCircuit, Sparkles, ShieldCheck, Hammer, Loader2, ThumbsUp, ThumbsDown, AlertCircle, ChevronDown, ChevronUp, Bot, FileText, Code, PenTool, Lightbulb, Zap, Target, Eye, MessageSquare, Activity, Compass, Crosshair, Cpu, Database, Globe, Layers, Layout, Maximize, Minimize, Monitor, MousePointer, Move, Navigation, Octagon, Package, Paperclip, PieChart, Play, Power, Printer, Radio, RefreshCw, Repeat, Save, Search, Send, Server, Settings, Share2, Shield, ShoppingBag, ShoppingCart, Shuffle, Sidebar, SkipBack, SkipForward, Slack, Slash, Sliders, Smartphone, Smile, Speaker, Square, Star, StopCircle, Sun, Sunrise, Sunset, Tablet, Tag, Target as TargetIcon, Terminal, Thermometer, ThumbsDown as ThumbsDownIcon, ThumbsUp as ThumbsUpIcon, ToggleLeft, ToggleRight, Trash, Trash2, Trello, TrendingDown, TrendingUp, Triangle, Truck, Tv, Twitch, Twitter, Type, Umbrella, Underline, Unlock, Upload, UploadCloud, User, UserCheck, UserMinus, UserPlus, Users, Video, VideoOff, Voicemail, Volume, Volume1, Volume2, VolumeX, Watch, Wifi, WifiOff, Wind, X, XCircle, XOctagon, XSquare, Youtube, ZapOff, ZoomIn, ZoomOut } from 'lucide-react';
+import { AgentPersona, AgentStatus, AgentResult } from '../types';
+import { BrainCircuit, Sparkles, ShieldCheck, Hammer, Loader2, ThumbsUp, ThumbsDown, AlertCircle, ChevronDown, ChevronUp, Bot, FileText, Code, PenTool, Lightbulb, Zap, Target, Eye, MessageSquare, Activity, Compass, Crosshair, Cpu, Database, Globe, Layers, Layout, Maximize, Minimize, Monitor, MousePointer, Move, Navigation, Octagon, Package, Paperclip, PieChart, Play, Power, Printer, Radio, RefreshCw, Repeat, Save, Search, Send, Server, Settings, Share2, Shield, ShoppingBag, ShoppingCart, Shuffle, Sidebar, SkipBack, SkipForward, Slack, Slash, Sliders, Smartphone, Smile, Speaker, Square, Star, StopCircle, Sun, Sunrise, Sunset, Tablet, Tag, Target as TargetIcon, Terminal, Thermometer, ThumbsDown as ThumbsDownIcon, ThumbsUp as ThumbsUpIcon, ToggleLeft, ToggleRight, Trash, Trash2, Trello, TrendingDown, TrendingUp, Triangle, Truck, Tv, Twitch, Twitter, Type, Umbrella, Underline, Unlock, Upload, UploadCloud, User, UserCheck, UserMinus, UserPlus, Users, Video, VideoOff, Voicemail, Volume, Volume1, Volume2, VolumeX, Watch, Wifi, WifiOff, Wind, X, XCircle, XOctagon, XSquare, Youtube, ZapOff, ZoomIn, ZoomOut, History as HistoryIcon } from 'lucide-react';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -12,8 +12,7 @@ interface AgentCardProps {
   error?: string;
   feedback?: 'up' | 'down';
   onFeedback?: (feedback: 'up' | 'down') => void;
-  sliders?: { creativity: number; logic: number; formality: number };
-  onSlidersChange?: (sliders: { creativity: number; logic: number; formality: number }) => void;
+  sessionHistory?: AgentResult[];
 }
 
 const IconMap: Record<string, React.FC<any>> = {
@@ -138,44 +137,15 @@ export const AgentCard: React.FC<AgentCardProps> = ({
   error, 
   feedback, 
   onFeedback,
-  sliders,
-  onSlidersChange
+  sessionHistory = []
 }) => {
   const Icon = IconMap[agent.icon] || BrainCircuit;
-  const [showErrorDetails, setShowErrorDetails] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  const [showErrorDetails, setShowErrorDetails] = useState(true);
+  const [showCritique, setShowCritique] = useState(true);
+  const [showHistory, setShowHistory] = useState(false);
 
   const renderThinkingAnimation = () => {
-    switch (agent.icon) {
-      case 'BrainCircuit':
-        return <BrainCircuit size={14} className="animate-spin text-cyan-400" style={{ animationDuration: '3s' }} />;
-      case 'Sparkles':
-        return <Sparkles size={14} className="animate-pulse text-purple-400" style={{ animationDuration: '0.8s', transform: 'scale(1.2)' }} />;
-      case 'ShieldCheck':
-        return (
-          <motion.div
-            animate={{ 
-              scale: [1, 1.1, 1],
-              opacity: [0.7, 1, 0.7]
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ShieldCheck size={14} className="text-emerald-400" />
-          </motion.div>
-        );
-      case 'Hammer':
-        return (
-          <motion.div
-            animate={{ rotate: [0, -20, 0] }}
-            transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{ transformOrigin: 'bottom right' }}
-          >
-            <Hammer size={14} className="text-amber-400" />
-          </motion.div>
-        );
-      default:
-        return <Loader2 size={14} className="animate-spin text-gray-400" />;
-    }
+    return <Icon size={14} className={`animate-pulse ${agent.color}`} />;
   };
 
   return (
@@ -183,27 +153,31 @@ export const AgentCard: React.FC<AgentCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`relative flex flex-col h-full rounded-xl border ${status === AgentStatus.ERROR ? 'border-red-500/50' : 'border-white/10'} bg-gradient-to-br ${agent.bgGradient} backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-white/20 shadow-lg`}
+      className={`relative flex flex-col h-full rounded-xl border ${status === AgentStatus.ERROR ? 'border-red-500/50' : feedback === 'up' ? 'border-green-500/80 shadow-[0_0_20px_rgba(34,197,94,0.3)] ring-1 ring-green-500/50' : feedback === 'down' ? 'border-red-500/80 shadow-[0_0_20px_rgba(239,68,68,0.3)] ring-1 ring-red-500/50' : 'border-white/10'} bg-gradient-to-br ${agent.bgGradient} backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-white/20 shadow-lg`}
     >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-white/5">
         <div className="flex items-center gap-3">
           <div className={`p-2 rounded-lg bg-black/40 ${agent.color}`}>
-            <Icon size={20} />
+            <Icon size={20} className={(status === AgentStatus.THINKING || status === AgentStatus.CRITIQUING) ? 'animate-pulse' : ''} />
           </div>
-          <div>
-            <h3 className={`font-bold text-sm tracking-wide ${agent.color}`}>{agent.name}</h3>
-            <p className="text-[10px] text-gray-400 uppercase tracking-wider">{agent.role}</p>
+          <div className="flex items-center gap-2">
+            <div>
+              <h3 className={`font-bold text-sm tracking-wide ${agent.color}`}>{agent.name}</h3>
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider">{agent.role}</p>
+            </div>
+            {sessionHistory.length > 0 && (
+              <button
+                onClick={() => setShowHistory(!showHistory)}
+                className={`p-1 rounded-md transition-colors ${showHistory ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'}`}
+                title="Toggle Session History"
+              >
+                <HistoryIcon size={14} />
+              </button>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-2">
-           <button 
-             onClick={() => setShowSettings(!showSettings)}
-             className={`p-1 rounded hover:bg-white/10 transition-colors ${showSettings ? 'text-cyan-400 bg-white/5' : 'text-gray-500'}`}
-             title="Agent Settings"
-           >
-             <Settings size={14} />
-           </button>
            {status === AgentStatus.THINKING && (
               <span className="flex items-center gap-2 text-xs text-white/50">
                 {renderThinkingAnimation()}
@@ -211,12 +185,12 @@ export const AgentCard: React.FC<AgentCardProps> = ({
               </span>
            )}
            {status === AgentStatus.CRITIQUING && (
-              <span className="flex items-center gap-2 text-xs text-amber-400/80">
-                <Loader2 size={14} className="animate-spin" />
-                <span className="animate-pulse">Critiquing...</span>
+              <span className="flex items-center gap-2 text-xs text-amber-400/80 bg-amber-500/10 px-2 py-1 rounded-full border border-amber-500/30">
+                <Icon size={14} className="animate-pulse" />
+                <span className="animate-pulse font-medium">Critiquing...</span>
               </span>
            )}
-           {status === AgentStatus.COMPLETED && (
+           {(status === AgentStatus.COMPLETED || status === AgentStatus.CRITIQUING) && content && (
              <div className="flex items-center gap-2">
                 <button 
                   onClick={() => onFeedback?.('up')}
@@ -240,82 +214,33 @@ export const AgentCard: React.FC<AgentCardProps> = ({
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 p-4 overflow-y-auto scrollbar-hide text-xs sm:text-sm leading-relaxed text-gray-300 font-mono">
+      <div className="flex-1 p-4 overflow-y-auto scrollbar-hide text-xs sm:text-sm leading-relaxed text-gray-300">
         <AnimatePresence mode="wait">
-          {showSettings ? (
+          {showHistory ? (
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4 p-2"
+              exit={{ opacity: 0, x: 20 }}
+              className="flex flex-col gap-4"
             >
-              <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider">Agent Parameters</h4>
-                <button onClick={() => setShowSettings(false)} className="text-gray-500 hover:text-white">
-                  <X size={14} />
-                </button>
-              </div>
-              
-              {sliders && onSlidersChange && (
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[10px]">
-                      <span className="text-purple-400 font-bold uppercase">Creativity</span>
-                      <span className="text-white">{sliders.creativity}%</span>
-                    </div>
-                    <input 
-                      type="range" min="0" max="100" 
-                      value={sliders.creativity} 
-                      onChange={(e) => onSlidersChange({ ...sliders, creativity: parseInt(e.target.value) })}
-                      className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500"
-                    />
-                    <div className="flex justify-between text-[8px] text-gray-500">
-                      <span>Literal</span>
-                      <span>Creative</span>
-                    </div>
+              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                <HistoryIcon size={14} /> Session History
+              </h4>
+              {sessionHistory.map((hist, idx) => (
+                <div key={idx} className="bg-black/40 border border-white/5 rounded-lg p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] text-gray-500 uppercase">Turn {idx + 1}</span>
+                    {hist.feedback && (
+                      <span className={hist.feedback === 'up' ? 'text-green-400' : 'text-red-400'}>
+                        {hist.feedback === 'up' ? <ThumbsUp size={12} /> : <ThumbsDown size={12} />}
+                      </span>
+                    )}
                   </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[10px]">
-                      <span className="text-blue-400 font-bold uppercase">Logic</span>
-                      <span className="text-white">{sliders.logic}%</span>
-                    </div>
-                    <input 
-                      type="range" min="0" max="100" 
-                      value={sliders.logic} 
-                      onChange={(e) => onSlidersChange({ ...sliders, logic: parseInt(e.target.value) })}
-                      className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                    />
-                    <div className="flex justify-between text-[8px] text-gray-500">
-                      <span>Intuitive</span>
-                      <span>Analytical</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[10px]">
-                      <span className="text-emerald-400 font-bold uppercase">Formality</span>
-                      <span className="text-white">{sliders.formality}%</span>
-                    </div>
-                    <input 
-                      type="range" min="0" max="100" 
-                      value={sliders.formality} 
-                      onChange={(e) => onSlidersChange({ ...sliders, formality: parseInt(e.target.value) })}
-                      className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-                    />
-                    <div className="flex justify-between text-[8px] text-gray-500">
-                      <span>Casual</span>
-                      <span>Formal</span>
-                    </div>
+                  <div className="text-xs text-gray-400 line-clamp-3 hover:line-clamp-none transition-all">
+                    {hist.content}
                   </div>
                 </div>
-              )}
-
-              <div className="pt-4 border-t border-white/5">
-                <p className="text-[10px] text-gray-500 italic">
-                  These parameters dynamically adjust the agent's persona and reasoning style for the next turn.
-                </p>
-              </div>
+              ))}
             </motion.div>
           ) : status === AgentStatus.ERROR ? (
             <motion.div 
@@ -334,20 +259,32 @@ export const AgentCard: React.FC<AgentCardProps> = ({
                 </button>
               </div>
               <p className="text-sm">The agent encountered an issue while processing your request.</p>
-              <div className="space-y-2 mt-1">
-                <p className="text-[10px] font-bold text-red-300/90 uppercase tracking-tighter">Troubleshooting Suggestions:</p>
-                <ul className="list-disc list-inside text-[10px] opacity-80 space-y-1">
-                  {error?.includes('SAFETY') ? (
-                    <li>The content was flagged by safety filters. Try rephrasing to be more neutral.</li>
-                  ) : error?.includes('QUOTA') || error?.includes('429') ? (
-                    <li>Rate limit exceeded. Please wait a moment before trying again.</li>
-                  ) : error?.includes('context window') || error?.includes('tokens') ? (
-                    <li>The conversation history might be too long. Try starting a new turn or clearing history.</li>
+              <div className="space-y-2 mt-2 bg-red-950/30 p-2 rounded border border-red-500/20">
+                <p className="text-[10px] font-bold text-red-300/90 uppercase tracking-tighter flex items-center gap-1">
+                  <Lightbulb size={12} className="text-amber-400" />
+                  AI Troubleshooting Suggestions:
+                </p>
+                <ul className="list-disc list-inside text-[10px] opacity-90 space-y-1.5 text-red-200">
+                  {error?.toLowerCase().includes('safety') || error?.toLowerCase().includes('blocked') ? (
+                    <>
+                      <li><strong>Safety Filter Triggered:</strong> The AI model blocked the response due to safety guidelines.</li>
+                      <li><strong>Action:</strong> Try rephrasing your prompt to be more neutral or avoid sensitive topics.</li>
+                    </>
+                  ) : error?.toLowerCase().includes('quota') || error?.includes('429') || error?.toLowerCase().includes('rate limit') ? (
+                    <>
+                      <li><strong>Rate Limit Exceeded:</strong> You are sending requests too quickly or have exhausted your API quota.</li>
+                      <li><strong>Action:</strong> Wait a few moments before trying again, or check your API billing dashboard.</li>
+                    </>
+                  ) : error?.toLowerCase().includes('context window') || error?.toLowerCase().includes('tokens') || error?.toLowerCase().includes('too large') ? (
+                    <>
+                      <li><strong>Context Window Exceeded:</strong> The conversation history or prompt is too long for the model to process.</li>
+                      <li><strong>Action:</strong> Try starting a new conversation or summarizing the previous context.</li>
+                    </>
                   ) : (
                     <>
-                      <li>Check your internet connection and API key status.</li>
-                      <li>The prompt might be too complex or ambiguous.</li>
-                      <li>The model might be temporarily overloaded.</li>
+                      <li><strong>Prompt Complexity:</strong> The prompt might be too ambiguous or complex for this specific agent persona.</li>
+                      <li><strong>Model Overload:</strong> The AI provider might be experiencing high traffic or temporary outages.</li>
+                      <li><strong>Action:</strong> Break your request into smaller steps, or try again in a few seconds.</li>
                     </>
                   )}
                 </ul>
@@ -363,6 +300,11 @@ export const AgentCard: React.FC<AgentCardProps> = ({
                   >
                     <div className="mt-2 pt-2 border-t border-red-500/20 whitespace-pre-wrap font-mono text-[10px] text-red-300/80">
                       {error}
+                    </div>
+                    <div className="mt-2 text-[10px]">
+                      <a href="#" className="text-red-400 hover:text-red-300 underline flex items-center gap-1 w-fit">
+                        <Globe size={10} /> View AI Troubleshooting Guide
+                      </a>
                     </div>
                   </motion.div>
                 )}
@@ -382,10 +324,29 @@ export const AgentCard: React.FC<AgentCardProps> = ({
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="pt-4 border-t border-white/10"
+                  className="mt-2 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20"
                 >
-                  <span className="text-[10px] uppercase tracking-wider text-amber-400 font-bold block mb-2">Critique & Refinement</span>
-                  <MarkdownRenderer content={critique} compact={true} />
+                  <button 
+                    onClick={() => setShowCritique(!showCritique)}
+                    className="flex items-center justify-between w-full text-[10px] uppercase tracking-wider text-amber-400 font-bold mb-2 hover:text-amber-300 transition-colors"
+                  >
+                    <span className="flex items-center gap-2"><Lightbulb size={12} /> Critique & Refinement</span>
+                    {showCritique ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  </button>
+                  <AnimatePresence>
+                    {showCritique && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pt-2 border-t border-amber-500/10">
+                          <MarkdownRenderer content={critique} compact={true} />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
             </motion.div>
